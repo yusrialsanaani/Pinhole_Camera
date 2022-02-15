@@ -109,7 +109,7 @@ imwrite(IM_Rcam1_HSV_f5,'IM_Rcam1_HSV_f5.jpg')
 % This part uses the same functions as in part 1 but with different 
 % homogeneous transformations.
 P5 = PPM(f5); % Perspective Projection Matrix with f = 5.
-% The homogeneous transformations:
+% The homogeneous Transformations:
 Q_Robj1_Rcam1 = [1 0 0 0; 0 1 0 0; 0 0 1 1000; 0 0 0 1];
 Q_Rcam2_Rcam1 = [0.866 0 -0.5 400; 0 1 0 0; 0.5 0 0.866 -600; 0 0 0 1];
 Q_Rcam3_Rcam1 = [0.7071 0 0.7071 -1200; 0 1 0 0; -0.7071 0 0.7071 0; 0 0 0 1];
@@ -172,7 +172,6 @@ xyz_camera = zeros(x_total,x_total,4);
 for i = 1:x_total
     for j = 1:x_total
         xyz_camera(i,j,:) = P * Q * squeeze(xyzw(i,j,:));
-        %xyzc1f5(i,j,:) = P1 * Q3 * Q1 * squeeze(xyzw(i,j,:));
     end
 end
 %%                          Perspective Projection Equations
@@ -190,19 +189,17 @@ xyz_camera(:,:,2) = round(xyz_camera(:,:,2)./resolution_raw)+(raw_pixel/2);
 
 %% Mapping the color patterns to the equivalant coordinations of the image plane
 % Propagate the color patterns along with the (X,Y,Z) coordinates of every sample point.
-%xypixelc1f5rgb = 0.5*ones(480,640,3);
 % Initializing the background of the output image map with a shading of medium gray
 image = 0.5*ones(column_pixel,raw_pixel,3);
 % Retrieve the transformed coordination in image plane range: 
 % - Columns: between 0 and 641
 % - Raws: between 0 and 480
+
 for i = 1:x_total
     for j = 1:x_total
         if (xyz_camera(i,j,1)>0) && (xyz_camera(i,j,2)>0) &&...
                 (xyz_camera(i,j,1) <= column_pixel) && (xyz_camera(i,j,2) <= raw_pixel)
-            if image(xyz_camera(i,j,1), xyz_camera(i,j,2),:) == 0.5
-                image(xyz_camera(i,j,1), xyz_camera(i,j,2),:) = color_space(i,j,:);
-            end
+            image(xyz_camera(i,j,1), xyz_camera(i,j,2),:) = color_space(i,j,:);
         end
     end
 end
