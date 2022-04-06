@@ -8,3 +8,4 @@ The virtual pleane:
 The formed images:
 ![A1_Pinhole_Camera](https://user-images.githubusercontent.com/89004966/153985719-d47070fe-99bc-44fb-829c-3b073f145fee.jpg)
 
+#
